@@ -33,5 +33,5 @@ fi
 
 mkdir -p $GOBIN
 
-cd /app
+cd $build
 go build -o go
