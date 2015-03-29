@@ -1,0 +1,37 @@
+#!/bin/sh
+
+version=go1.3.3
+basename=$version.linux-amd64.tar.gz
+url=https://storage.googleapis.com/golang/$basename
+
+mkdir -p "$1" "$2"
+build=$(cd "$1/" && pwd)
+cache=$(cd "$2/" && pwd)
+
+export GOBIN=$build/bin
+export GOROOT=$cache/$version/go
+export GOPATH=$build/.heroku/g
+PATH=$GOROOT/bin:$PATH
+
+msg() {
+  printf '-----> %s\n' "$*"
+}
+
+set -e
+
+if test -d $cache/$version/go
+then
+  msg Using $version
+else
+  rm -rf $cache
+  mkdir -p $cache/$version
+  cd $cache/$version
+  msg Installing $version
+  curl -s $url | tar zx
+  msg Done
+fi
+
+mkdir -p $GOBIN
+
+cd /app
+go build -o go
