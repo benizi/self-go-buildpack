@@ -1,2 +1,6 @@
 #!/bin/sh
-printf '%s' '--- {}'
+cat <<YAML
+---
+default_process_types:
+  web: /app/go
+YAML
